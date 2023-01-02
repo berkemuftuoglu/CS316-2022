@@ -13,7 +13,11 @@ import Prelude hiding (Left, Right, reverse)
 {- 1. Write a function: -}
 
 isHorizontal :: Direction -> Bool
-isHorizontal = undefined
+isHorizontal Right = True
+isHorizontal Left = True
+isHorizontal Up = False
+isHorizontal Down = False
+
 
 {- that returns 'True' if the direction is 'Left' or 'Right', and
    'False' otherwise. -}
@@ -22,7 +26,9 @@ isHorizontal = undefined
 {- 2. Write a function: -}
 
 flipHorizontally :: Direction -> Direction
-flipHorizontally = undefined
+flipHorizontally Left = Right
+flipHorizontally Right = Left
+flipHorizontally n = n 
 
 {- that flips horizontally (Left <-> Right, Up and Down stay the same). -}
 
@@ -31,8 +37,13 @@ flipHorizontally = undefined
       input: -}
 
 pairOfEqualDirections :: Pair Direction Direction -> Bool
-pairOfEqualDirections = undefined
+pairOfEqualDirections (MkPair Up Down) =  True
+pairOfEqualDirections (MkPair Down Up) =  True
+pairOfEqualDirections (MkPair Left Right) =  True
+pairOfEqualDirections (MkPair Right Left) =  True
+pairOfEqualDirections (MkPair _ _) = False
 
+{-    You will need to use pattern matching on the pair. -}
 
 {- 4. Define a datatype 'Triple a b c' for values that have three
       components. Write functions 'get1of3 :: Triple a b c -> a',
@@ -40,6 +51,16 @@ pairOfEqualDirections = undefined
       components. You will have to come up with the type signatures
       for the second and third one. -}
 
+data Triple a b c = MkTriple a b c
+
+get1of3 :: Triple a b c -> a
+get1of3 (MkTriple a _ _) = a
+
+get2of3 :: Triple a b c -> b
+get2of3 (MkTriple _ b _) = b
+
+get3of3 :: Triple a b c -> c
+get3of3 (MkTriple _ _ c) = c
 
 {- 5. Pattern matching on specific characters is done by writing the
       character to match. For example: -}
@@ -59,7 +80,9 @@ isA _   = False
       pattern matching on them.) -}
 
 dropSpaces :: [Char] -> [Char]
-dropSpaces = undefined
+dropSpaces [] = []
+dropSpaces (' ':xs) = dropSpaces xs
+dropSpaces (x:xs) = x:xs
 
 {- 6. Using 'reverse' and 'dropSpaces', write a function that removes
       spaces at the *end* of a list of characters. For example:
@@ -68,8 +91,12 @@ dropSpaces = undefined
          "hello"
 -}
 
+
+
 dropTrailingSpaces :: [Char] -> [Char]
-dropTrailingSpaces = undefined
+dropTrailingSpaces [] = []
+dropTrailingSpaces n = reverse (dropSpaces (reverse n))
+
 
 {- 7. HTML escaping. When writing HTML, the characters '<', '&', and '>'
       are special because they are used to represent tags and
@@ -89,7 +116,11 @@ dropTrailingSpaces = undefined
 -}
 
 htmlEscape :: String -> String
-htmlEscape = undefined
+htmlEscape "" = ""
+htmlEscape "<" = "&lt;"
+htmlEscape ">" = "&gt;"
+htmlEscape "&" = "&amp;"
+htmlEscape (h:tl) = h : htmlEscape tl
 
 {- 8. The following datatype represents a piece of text marked up with
       style information. -}
